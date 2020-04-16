@@ -119,7 +119,3 @@ def load_dataset():
     img_lab, expectations = get_all_dataset(TRAIN_CSV_PATH)
     imgs = get_img(img_lab, IMG_PATH)
     return get_final_dataset(imgs, expectations)
-
-
-x_t, x_te, y_t, y_te = load_dataset()
-print(x_t.shape, x_te.shape, y_t.shape, y_te.shape)
