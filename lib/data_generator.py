@@ -1,6 +1,8 @@
 """
 
 CE MODULE EST CHARGÉ DE FOURNIR LE DATASET
+BIEN QUE LE REDIMENSIONNAGE DEVRAIT ÊTRE FAIT DANS LES MODÈLES
+LA FAIBLE MÉMOIRE (8Go) DE MA MACHINE M'OBLIGE À RÉDIMENSIONNER EN CHARGEANT LE DATASET
 
 """
 
@@ -15,7 +17,9 @@ DATASET_TARGET = "./data/"
 TRAIN_CSV_PATH = "./data/train.csv"
 IMG_PATH = "./data/images/"
 IMG_EXT = ".jpg"
+IMG_SIZE = (128, 128)
 TRAIN_PROPORTION = 0.8
+
 
 
 # récupère le dataset sur kaggle
@@ -75,6 +79,7 @@ def get_img(img_label, img_path):
 
         for label in img_label:
             img_np = cv2.imread(img_path + label + IMG_EXT)
+            img_np = cv2.resize(img_np, IMG_SIZE)
             imgs.append(img_np)
 
         return imgs
@@ -119,7 +124,3 @@ def load_dataset():
     img_lab, expectations = get_all_dataset(TRAIN_CSV_PATH)
     imgs = get_img(img_lab, IMG_PATH)
     return get_final_dataset(imgs, expectations)
-
-
-x_t, x_te, y_t, y_te = load_dataset()
-print(x_t.shape, x_te.shape, y_t.shape, y_te.shape)
