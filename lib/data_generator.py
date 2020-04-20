@@ -17,14 +17,11 @@ DATASET_TARGET = "./data/"
 TRAIN_CSV_PATH = "./data/train.csv"
 IMG_PATH = "./data/images/"
 IMG_EXT = ".jpg"
-IMG_SIZE = (128, 128)
 TRAIN_PROPORTION = 0.8
-
 
 
 # récupère le dataset sur kaggle
 def download_dataset():
-
     print("Plant Health dataset downloading.")
 
     try:
@@ -32,6 +29,9 @@ def download_dataset():
         print("Creation of {}.".format(DATASET_TARGET))
     except FileExistsError as e:
         print("Directory {} already exist.".format(DATASET_TARGET))
+        if os.path.exists(DATASET_TARGET) and os.path.exists(TRAIN_CSV_PATH) and os.path.exists(IMG_PATH):
+            print("Dataset already install.")
+            return
 
     print("Downloading dataset from kaggle.")
     filename = wget.download(DATASET_URL, DATASET_TARGET)
@@ -71,7 +71,7 @@ def get_all_dataset(train_path):
 
 
 # retourne les images à partir de leurs noms
-def get_img(img_label, img_path):
+def get_img(img_label, img_path, img_size):
     try:
 
         print("Load plant images.")
@@ -79,7 +79,7 @@ def get_img(img_label, img_path):
 
         for label in img_label:
             img_np = cv2.imread(img_path + label + IMG_EXT)
-            img_np = cv2.resize(img_np, IMG_SIZE)
+            img_np = cv2.resize(img_np, img_size)
             imgs.append(img_np)
 
         return imgs
@@ -119,8 +119,8 @@ def get_final_dataset(imgs, expectations):
 
 
 # fonction a appelé pour charger le dataset
-def load_dataset():
+def load_dataset(img_size):
     download_dataset()
     img_lab, expectations = get_all_dataset(TRAIN_CSV_PATH)
-    imgs = get_img(img_lab, IMG_PATH)
+    imgs = get_img(img_lab, IMG_PATH, img_size)
     return get_final_dataset(imgs, expectations)
