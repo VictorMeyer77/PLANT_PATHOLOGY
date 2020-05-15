@@ -93,6 +93,8 @@ def get_img(img_label, img_path, img_size):
 def get_final_dataset(imgs, expectations):
     try:
 
+
+
         print("Creation of the final dataset.")
         x_train = []
         y_train = []
